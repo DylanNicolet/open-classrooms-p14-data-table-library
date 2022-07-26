@@ -1,0 +1,15 @@
+.table{
+    background-color: lightgrey;
+}
+
+.table__header-row{
+    background-color: grey;
+}
+
+.table__header{
+    padding: 5px 15px;
+}
+
+.table__data-value{
+    padding: 5px;
+}
