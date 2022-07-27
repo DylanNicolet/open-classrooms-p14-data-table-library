@@ -8,18 +8,36 @@ const stories = storiesOf("App Test", module)
 
 stories.add("App", () => {
 
-    const tableHeaders = ["First Name", "Last Name", "Department"]
+    const tableHeaders = [
+        {
+            header: "First Name",
+            dataKey: "firstName"
+        },
+        {
+            header: "Last Name",
+            dataKey: "lastName"
+        },
+        {
+            header: "Department",
+            dataKey: "department"
+        },
+    ]
 
     const data = [
         {
-            firstName: "Dylan",
-            lastName: "Nicolet",
-            department: "Logistics"
+            firstName: "Amanda",
+            lastName: "Mama",
+            department: "Denmark"
         },
         {
-            firstName: "Melissa",
-            lastName: "Corba",
-            department: "Sales"
+            firstName: "Bryan",
+            lastName: "Nyygern",
+            department: "England"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
         }
     ]
 

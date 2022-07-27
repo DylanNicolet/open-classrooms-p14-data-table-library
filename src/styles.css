@@ -8,6 +8,12 @@
 
 .table__header{
     padding: 5px 15px;
+    cursor: default;
+}
+
+.table__header-filter{
+    margin-left: 10px;
+    cursor: pointer;
 }
 
 .table__data-value{
