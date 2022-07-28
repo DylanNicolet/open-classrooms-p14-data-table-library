@@ -9,7 +9,7 @@ const stories = storiesOf("App Test", module)
 stories.add("App", () => {
 
     const entriesPerPage = [
-        10,25,50,100
+        5,10,25,50,100
     ]
 
     const tableHeaders = [
@@ -42,7 +42,72 @@ stories.add("App", () => {
             firstName: "Charlie",
             lastName: "Oboubou",
             department: "Finland"
-        }
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Echo",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Delta",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
+        {
+            firstName: "Charlie",
+            lastName: "Oboubou",
+            department: "Finland"
+        },
     ]
 
     return(

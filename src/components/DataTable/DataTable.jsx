@@ -8,15 +8,29 @@ import Dropdown from "react-dropdown"
 
 export function DataTable(props){
     let data = props.data
-    let initialTableData = data.slice(0,10)
 
-    const [tableData, setTableData] = React.useState(initialTableData)
-    const [entries, setEntries] = React.useState(10)
-    
+    const [tableData, setTableData] = React.useState(data)
+    const [entries, setEntries] = React.useState(props.entriesPerPage[0])
+
+    const [numberOfPages, setNumberOfPages] = React.useState(Math.ceil(data.length/entries))
+
+    //Next step: generate buttons according to "numberOfPages" <--------------
+
+    //Updates the number of entries per table page
     React.useEffect(() => {
         let newTableData = data.slice(0, entries)
         setTableData(newTableData)
+        setNumberOfPages(Math.ceil(data.length/entries))
     }, [entries])
+
+
+    function handlePage(e){
+        let currentPage = parseInt(e.target.innerHTML)
+        let firstSlice = ((currentPage*entries)-entries)
+        let secondSlice = (firstSlice+entries)
+        let newTableData = data.slice(firstSlice, secondSlice)
+        setTableData(newTableData)
+    }
     
 
     /*React.useEffect(() => {
@@ -39,13 +53,9 @@ export function DataTable(props){
         </tr>
     ))
 
-    function handleClick(){
-
-    }
-
     //map over header array to generate table headers
     const tableHeaders = props.tableHeaders.map((object, index) => (
-        <th key={index} className="table__header">{object.header}<button className="table__header-filter" onClick={handleClick()}>X</button></th>
+        <th key={index} className="table__header">{object.header}<button className="table__header-filter">X</button></th>
         
     ))
 
@@ -53,7 +63,7 @@ export function DataTable(props){
         <section>
             <section className="dropdown__container">
                 <p>Show</p>
-                <Dropdown options={props.entriesPerPage} placeholder={10} onChange={e => setEntries(e.value)}/>
+                <Dropdown options={props.entriesPerPage} placeholder={props.entriesPerPage[0]} onChange={e => setEntries(e.value)}/>
                 <p>entries</p>
             </section>
             
@@ -63,7 +73,9 @@ export function DataTable(props){
                 </tr>
                 {table}
             </table>
-            
+            <button onClick={e=>handlePage(e)}>1</button>
+            <button onClick={e=>handlePage(e)}>2</button>
+            <button onClick={e=>handlePage(e)}>3</button>
         </section>
     )
 }
