@@ -8,6 +8,10 @@ const stories = storiesOf("App Test", module)
 
 stories.add("App", () => {
 
+    const entriesPerPage = [
+        10,25,50,100
+    ]
+
     const tableHeaders = [
         {
             header: "First Name",
@@ -42,6 +46,6 @@ stories.add("App", () => {
     ]
 
     return(
-        <DataTable tableHeaders={tableHeaders} data={data}/>
+        <DataTable tableHeaders={tableHeaders} data={data} entriesPerPage={entriesPerPage}/>
     )
 })
