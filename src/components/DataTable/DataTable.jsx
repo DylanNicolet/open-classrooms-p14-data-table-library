@@ -9,55 +9,12 @@ import Dropdown from "react-dropdown"
 export function DataTable(props){
     let data = props.data
 
-    const [tableData, setTableData] = React.useState(data)
+    const [reOrderedData, setReOrderedData] = React.useState(data)
+    const [tableData, setTableData] = React.useState(reOrderedData)
     const [entries, setEntries] = React.useState(props.entriesPerPage[0])
     const [numberOfPages, setNumberOfPages] = React.useState(Math.ceil(data.length/entries))
     const [showing, setShowing] = React.useState([1,entries])
-
-    //Generate number of page buttons according to "numberOfPages"
-    const buttons = [...Array(numberOfPages)].map((page, index) => (
-        <button key={index} onClick={e=>handlePage(e)} className="number-of-pages__button">{index + 1}</button>
-    ))
-
-    //Updates the number of entries per table page
-    React.useEffect(() => {
-        let newTableData = data.slice(0, entries)
-        setTableData(newTableData)
-        setNumberOfPages(Math.ceil(data.length/entries))
-        let limit = entries
-        if(limit > data.length){
-            limit = data.length
-        }
-        setShowing([1,limit])
-    }, [entries])
-
-
-    function handlePage(e){
-        let currentPage = parseInt(e.target.innerHTML)
-        let firstSlice = ((currentPage*entries)-entries)
-        let secondSlice = (firstSlice+entries)
-        let newTableData = data.slice(firstSlice, secondSlice)
-        setTableData(newTableData)
-        let lowerLimit = firstSlice
-        if(lowerLimit === 0){
-            lowerLimit = 1
-        }
-        let limit = secondSlice
-        if(limit > data.length){
-            limit = data.length
-        }
-        setShowing([lowerLimit, limit])
-    }
-    
-
-    /*React.useEffect(() => {
-        if(!ascending){
-            data.sort((a,b) => (a.filterValue  < b.lastName) ? 1 : ((b.lastName < a.lastName) ? -1 : 0))
-        }else{
-            data.sort((a,b) => (a.lastName > b.lastName) ? 1 : ((b.lastName > a.lastName) ? -1 : 0))
-        }
-    }, [ascending])*/
-    
+    const [ascending, setAscending] = React.useState([false, ""])
 
     //map over each employee and map over each value to create employee data rows
     const table = tableData.map((employee, index) => (
@@ -70,9 +27,71 @@ export function DataTable(props){
         </tr>
     ))
 
+    //Generate number of page buttons according to "numberOfPages"
+    const buttons = [...Array(numberOfPages)].map((page, index) => (
+        <button key={index} onClick={e=>handlePage(e)} className="number-of-pages__button">{index + 1}</button>
+    ))
+
+    //Updates the number of entries per table page
+    React.useEffect(() => {
+        let newTableData = reOrderedData.slice(0, entries)
+        setTableData(newTableData)
+        setNumberOfPages(Math.ceil(data.length/entries))
+        let limit = entries
+        if(limit > data.length){
+            limit = data.length
+        }
+        setShowing([1,limit])
+    }, [entries, reOrderedData])
+
+    //re-render table according to selected page
+    function handlePage(e){
+        let currentPage = parseInt(e.target.innerHTML)
+        let firstSlice = ((currentPage*entries)-entries)
+        let secondSlice = (firstSlice+entries)
+        let newTableData = reOrderedData.slice(firstSlice, secondSlice)
+        setTableData(newTableData)
+        let lowerLimit = firstSlice
+        if(lowerLimit === 0){
+            lowerLimit = 1
+        }
+        let limit = secondSlice
+        if(limit > data.length){
+            limit = data.length
+        }
+        setShowing([lowerLimit, limit])
+    }
+
+    //Custom sorting function for handleReOrder below
+    function dynamicSort(property) {
+        let sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1
+            property = property.substr(1)
+        }
+        return function (a,b) {
+            let result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0
+            return result * sortOrder
+        }
+    }
+
+    //Re Order the data according to which reorder button was pressed
+    function handleReOrder(dataKey){
+        if(ascending[0] && ascending[1] === dataKey){
+            let sortData = [...reOrderedData]
+            let newData = sortData.reverse()
+            setReOrderedData(newData)
+        } else{
+            let sortData = [...reOrderedData]
+            let newData = sortData.sort(dynamicSort(dataKey))
+            setReOrderedData(newData)
+            setAscending([true, dataKey])
+        }
+    }
+    
     //map over header array to generate table headers
     const tableHeaders = props.tableHeaders.map((object, index) => (
-        <th key={index} className="table__header">{object.header}<button className="table__header-filter">X</button></th>
+        <th key={index} className="table__header">{object.header}<button className="table__header-filter button" onClick={() => handleReOrder(object.dataKey)}>X</button></th>
         
     ))
 

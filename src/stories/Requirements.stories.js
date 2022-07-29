@@ -29,7 +29,7 @@ stories.add("App", () => {
 
     const data = [
         {
-            firstName: "Amanda",
+            firstName: "Zmanda",
             lastName: "Mango",
             department: "Denmark"
         },
