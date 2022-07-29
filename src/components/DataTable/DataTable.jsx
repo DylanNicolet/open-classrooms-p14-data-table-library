@@ -1,26 +1,34 @@
 import React from "react"
 import Dropdown from "react-dropdown"
+
 /*props
     data: Array of objects(employees info)
     tableHeaders: Array of objects(header + dataKey)
     entriesPerPage: Array of Numbers(how many entries to display per table page)
 */
-
 export function DataTable(props){
     let data = props.data
 
     const [tableData, setTableData] = React.useState(data)
     const [entries, setEntries] = React.useState(props.entriesPerPage[0])
-
     const [numberOfPages, setNumberOfPages] = React.useState(Math.ceil(data.length/entries))
+    const [showing, setShowing] = React.useState([1,entries])
 
-    //Next step: generate buttons according to "numberOfPages" <--------------
+    //Generate number of page buttons according to "numberOfPages"
+    const buttons = [...Array(numberOfPages)].map((page, index) => (
+        <button key={index} onClick={e=>handlePage(e)} className="number-of-pages__button">{index + 1}</button>
+    ))
 
     //Updates the number of entries per table page
     React.useEffect(() => {
         let newTableData = data.slice(0, entries)
         setTableData(newTableData)
         setNumberOfPages(Math.ceil(data.length/entries))
+        let limit = entries
+        if(limit > data.length){
+            limit = data.length
+        }
+        setShowing([1,limit])
     }, [entries])
 
 
@@ -30,6 +38,15 @@ export function DataTable(props){
         let secondSlice = (firstSlice+entries)
         let newTableData = data.slice(firstSlice, secondSlice)
         setTableData(newTableData)
+        let lowerLimit = firstSlice
+        if(lowerLimit === 0){
+            lowerLimit = 1
+        }
+        let limit = secondSlice
+        if(limit > data.length){
+            limit = data.length
+        }
+        setShowing([lowerLimit, limit])
     }
     
 
@@ -60,7 +77,7 @@ export function DataTable(props){
     ))
 
     return(
-        <section>
+        <section className="component-container">
             <section className="dropdown__container">
                 <p>Show</p>
                 <Dropdown options={props.entriesPerPage} placeholder={props.entriesPerPage[0]} onChange={e => setEntries(e.value)}/>
@@ -73,9 +90,13 @@ export function DataTable(props){
                 </tr>
                 {table}
             </table>
-            <button onClick={e=>handlePage(e)}>1</button>
-            <button onClick={e=>handlePage(e)}>2</button>
-            <button onClick={e=>handlePage(e)}>3</button>
+            <section className="table-footer">
+                <p>Showing {showing[0]} to {showing[1]} of {data.length} entries</p>
+                <section>
+                    {buttons}
+                </section>
+            </section>
+            
         </section>
     )
 }

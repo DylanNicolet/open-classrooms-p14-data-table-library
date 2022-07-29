@@ -30,7 +30,7 @@ stories.add("App", () => {
     const data = [
         {
             firstName: "Amanda",
-            lastName: "Mama",
+            lastName: "Mango",
             department: "Denmark"
         },
         {
