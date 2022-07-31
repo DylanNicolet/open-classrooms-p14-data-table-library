@@ -12,9 +12,10 @@ export function DataTable(props){
     const [reOrderedData, setReOrderedData] = React.useState(data)
     const [tableData, setTableData] = React.useState(reOrderedData)
     const [entries, setEntries] = React.useState(props.entriesPerPage[0])
-    const [numberOfPages, setNumberOfPages] = React.useState(Math.ceil(data.length/entries))
+    const [numberOfPages, setNumberOfPages] = React.useState(Math.ceil(reOrderedData.length/entries))
     const [showing, setShowing] = React.useState([1,entries])
     const [ascending, setAscending] = React.useState([false, ""])
+    const [searchInput, setSearchInput] = React.useState("")
 
     //map over each employee and map over each value to create employee data rows
     const table = tableData.map((employee, index) => (
@@ -27,6 +28,22 @@ export function DataTable(props){
         </tr>
     ))
 
+    //Filter the table according to search input
+    React.useEffect(() => {
+        const lowerCaseSearchInput = searchInput.toLowerCase().trim()
+        if(!lowerCaseSearchInput){
+            setReOrderedData(data)
+        }
+        else{
+            let filteredData = data.filter(employee => {
+                return Object.keys(employee).some(key => {
+                    return employee[key].toString().toLowerCase().includes(lowerCaseSearchInput)
+                })
+            })
+            setReOrderedData(filteredData)
+        }
+    },[searchInput])
+
     //Generate number of page buttons according to "numberOfPages"
     const buttons = [...Array(numberOfPages)].map((page, index) => (
         <button key={index} onClick={e=>handlePage(e)} className="number-of-pages__button">{index + 1}</button>
@@ -36,10 +53,10 @@ export function DataTable(props){
     React.useEffect(() => {
         let newTableData = reOrderedData.slice(0, entries)
         setTableData(newTableData)
-        setNumberOfPages(Math.ceil(data.length/entries))
+        setNumberOfPages(Math.ceil(reOrderedData.length/entries))
         let limit = entries
-        if(limit > data.length){
-            limit = data.length
+        if(limit > reOrderedData.length){
+            limit = reOrderedData.length
         }
         setShowing([1,limit])
     }, [entries, reOrderedData])
@@ -56,15 +73,15 @@ export function DataTable(props){
             lowerLimit = 1
         }
         let limit = secondSlice
-        if(limit > data.length){
-            limit = data.length
+        if(limit > reOrderedData.length){
+            limit = reOrderedData.length
         }
         setShowing([lowerLimit, limit])
     }
 
     //Custom sorting function for handleReOrder below
     function dynamicSort(property) {
-        let sortOrder = 1;
+        let sortOrder = 1
         if(property[0] === "-") {
             sortOrder = -1
             property = property.substr(1)
@@ -91,18 +108,23 @@ export function DataTable(props){
     
     //map over header array to generate table headers
     const tableHeaders = props.tableHeaders.map((object, index) => (
-        <th key={index} className="table__header">{object.header}<button className="table__header-filter button" onClick={() => handleReOrder(object.dataKey)}>X</button></th>
+        <th key={index} className="table__header">{object.header}<button className="table__header-filter button" onClick={() => handleReOrder(object.dataKey)}>⥮</button></th>
         
     ))
 
     return(
         <section className="component-container">
-            <section className="dropdown__container">
-                <p>Show</p>
-                <Dropdown options={props.entriesPerPage} placeholder={props.entriesPerPage[0]} onChange={e => setEntries(e.value)}/>
-                <p>entries</p>
+            <section className="table-header">
+                <section className="dropdown__container">
+                    <p>Show</p>
+                    <Dropdown options={props.entriesPerPage} placeholder={props.entriesPerPage[0]} onChange={e => setEntries(e.value)}/>
+                    <p>entries</p>
+                </section>
+                <section className="search__container">
+                    <p>Search:</p>
+                    <input type="text" value={searchInput} onChange={e => setSearchInput(e.target.value)}/>
+                </section>
             </section>
-            
             <table className="table">
                 <tr className="table__header-row">
                     {tableHeaders}
@@ -110,7 +132,7 @@ export function DataTable(props){
                 {table}
             </table>
             <section className="table-footer">
-                <p>Showing {showing[0]} to {showing[1]} of {data.length} entries</p>
+                <p>Showing {showing[0]} to {showing[1]} of {reOrderedData.length} entries</p>
                 <section>
                     {buttons}
                 </section>

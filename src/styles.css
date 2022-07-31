@@ -28,6 +28,12 @@
     padding: 5px;
 }
 
+/*Table header (dropdown + search)*/
+.table-header{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
 
 /*Drop-down styles*/
 .Dropdown-root {
@@ -133,6 +139,18 @@ padding: 8px 10px;
 .dropdown__container p{
     margin-left: 5px;
     margin-right: 5px;
+}
+
+/*Search function*/
+.search__container{
+    display: flex;
+    align-items: center;
+}
+
+.search__container input{
+    height: auto;
+    padding: 3px;
+    margin-left: 5px;
 }
 
 /*Number of pages*/
