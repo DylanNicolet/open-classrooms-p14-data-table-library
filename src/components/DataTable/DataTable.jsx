@@ -1,5 +1,4 @@
 import React from "react"
-import Dropdown from "react-dropdown"
 
 /*props
     data: Array of objects(employees info)
@@ -112,12 +111,19 @@ export function DataTable(props){
         
     ))
 
+    //map over props.entriesPerPage to generate dropdown options
+    const options = props.entriesPerPage.map((entries, index) => (
+        <option key={index} value={entries}>{entries}</option>
+    ))
+
     return(
         <section className="component-container">
             <section className="table-header">
                 <section className="dropdown__container">
                     <p>Show</p>
-                    <Dropdown options={props.entriesPerPage} placeholder={props.entriesPerPage[0]} onChange={e => setEntries(e.value)}/>
+                    <select name="entries" id="entries-select" onChange={e => setEntries(e.target.value)}>
+                        {options}
+                    </select>
                     <p>entries</p>
                 </section>
                 <section className="search__container">
