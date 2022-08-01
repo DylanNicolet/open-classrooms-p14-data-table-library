@@ -1,4 +1,5 @@
 import React from "react"
+import "../../styles.css"
 
 /*props
     data: Array of objects(employees info)
@@ -132,10 +133,14 @@ export function DataTable(props){
                 </section>
             </section>
             <table className="table">
-                <tr className="table__header-row">
-                    {tableHeaders}
-                </tr>
-                {table}
+                <thead>
+                    <tr className="table__header-row">
+                        {tableHeaders}
+                    </tr> 
+                </thead>
+                <tbody>
+                    {table}
+                </tbody>
             </table>
             <section className="table-footer">
                 <p>Showing {showing[0]} to {showing[1]} of {reOrderedData.length} entries</p>
