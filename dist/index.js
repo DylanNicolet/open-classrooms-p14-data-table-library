@@ -149,9 +149,9 @@ function DataTable(props) {
     onChange: e => setSearchInput(e.target.value)
   }))), /*#__PURE__*/React__default["default"].createElement("table", {
     className: "table"
-  }, /*#__PURE__*/React__default["default"].createElement("tr", {
+  }, /*#__PURE__*/React__default["default"].createElement("thead", null, /*#__PURE__*/React__default["default"].createElement("tr", {
     className: "table__header-row"
-  }, tableHeaders), table), /*#__PURE__*/React__default["default"].createElement("section", {
+  }, tableHeaders)), /*#__PURE__*/React__default["default"].createElement("tbody", null, table)), /*#__PURE__*/React__default["default"].createElement("section", {
     className: "table-footer"
   }, /*#__PURE__*/React__default["default"].createElement("p", null, "Showing ", showing[0], " to ", showing[1], " of ", reOrderedData.length, " entries"), /*#__PURE__*/React__default["default"].createElement("section", null, buttons)));
 }

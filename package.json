@@ -36,12 +36,13 @@
     "react-dom": "^18.2.0",
     "rollup": "^2.77.2",
     "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.2"
+    "rollup-plugin-peer-deps-external": "^2.2.4"
   },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "rollup-plugin-import-css": "^3.0.3"
+  }
 }
