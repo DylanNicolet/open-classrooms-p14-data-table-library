@@ -7,6 +7,8 @@ import "../../styles.css"
     entriesPerPage: Array of Numbers(how many entries to display per table page)
 */
 export function DataTable(props){
+
+    //States
     let data = props.data
     const [reOrderedData, setReOrderedData] = React.useState(data)
     const [tableData, setTableData] = React.useState(reOrderedData)
@@ -16,7 +18,19 @@ export function DataTable(props){
     const [ascending, setAscending] = React.useState([false, ""])
     const [searchInput, setSearchInput] = React.useState("")
 
-    //map over each employee and map over each value to create employee data rows
+    //map over each object in the data array and generate the table according to props.tableHeaders
+    const table = tableData.map((employee, index) => (
+        <tr key={index} className="table__data-row">
+            {props.tableHeaders.map((header, index) => {
+                return(
+                    <td key={index} className="table__data-value">{employee[header.dataKey]}</td>
+                )
+            })}
+        </tr>
+    ))
+
+    //Saved chuck just in case
+    /*map over each employee and map over each value to create employee data rows
     const table = tableData.map((employee, index) => (
         <tr key={index} className="table__data-row">
             {Object.values(employee).map((value, index) => {
@@ -25,7 +39,7 @@ export function DataTable(props){
                 )
             })}
         </tr>
-    ))
+    ))*/
 
     //Filter the table according to search input
     React.useEffect(() => {
