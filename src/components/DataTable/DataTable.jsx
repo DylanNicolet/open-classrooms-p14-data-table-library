@@ -8,7 +8,6 @@ import "../../styles.css"
 */
 export function DataTable(props){
     let data = props.data
-
     const [reOrderedData, setReOrderedData] = React.useState(data)
     const [tableData, setTableData] = React.useState(reOrderedData)
     const [entries, setEntries] = React.useState(props.entriesPerPage[0])
@@ -80,27 +79,55 @@ export function DataTable(props){
     }
 
     //Custom sorting function for handleReOrder below
-    function dynamicSort(property) {
+    function ascendingSort(dataKey, isDate) {
         let sortOrder = 1
-        if(property[0] === "-") {
+        //For negative numbers
+        if(dataKey[0] === "-") {
             sortOrder = -1
-            property = property.substr(1)
+            dataKey = dataKey.substr(1)
         }
         return function (a,b) {
-            let result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0
+            let result = 0
+            if(isDate){
+                result = (new Date(a[dataKey]) < new Date(b[dataKey])) ? -1 : (new Date(a[dataKey]) > new Date(b[dataKey])) ? 1 : 0
+            }
+            else{
+                result = (a[dataKey] < b[dataKey]) ? -1 : (a[dataKey] > b[dataKey]) ? 1 : 0
+            }
+            return result * sortOrder
+        }
+    }
+
+    function descendingSort(dataKey, isDate) {
+        let sortOrder = 1
+        //For negative numbers
+        if(dataKey[0] === "-") {
+            sortOrder = -1
+            dataKey = dataKey.substr(1)
+        }
+        return function (a,b) {
+            let result = 0
+            if(isDate){
+                result = (new Date(a[dataKey]) > new Date(b[dataKey])) ? -1 : (new Date(a[dataKey]) < new Date(b[dataKey])) ? 1 : 0
+            }
+            else{
+                result = (a[dataKey] > b[dataKey]) ? -1 : (a[dataKey] < b[dataKey]) ? 1 : 0
+            } 
             return result * sortOrder
         }
     }
 
     //Re Order the data according to which reorder button was pressed
-    function handleReOrder(dataKey){
+    function handleReOrder(dataKey, isDate){
+        
         if(ascending[0] && ascending[1] === dataKey){
             let sortData = [...reOrderedData]
-            let newData = sortData.reverse()
+            let newData = sortData.sort(descendingSort(dataKey, isDate))
             setReOrderedData(newData)
+            setAscending([false, dataKey])
         } else{
             let sortData = [...reOrderedData]
-            let newData = sortData.sort(dynamicSort(dataKey))
+            let newData = sortData.sort(ascendingSort(dataKey, isDate))
             setReOrderedData(newData)
             setAscending([true, dataKey])
         }
@@ -108,7 +135,7 @@ export function DataTable(props){
     
     //map over header array to generate table headers
     const tableHeaders = props.tableHeaders.map((object, index) => (
-        <th key={index} className="table__header">{object.header}<button className="table__header-filter button" onClick={() => handleReOrder(object.dataKey)}>⥮</button></th>
+        <th key={index} className="table__header">{object.header}<button className="table__header-filter button" onClick={() => handleReOrder(object.dataKey, object.isDate)}>⥮</button></th>
         
     ))
 

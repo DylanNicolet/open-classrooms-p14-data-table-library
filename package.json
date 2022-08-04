@@ -1,6 +1,6 @@
 {
   "name": "open-classrooms-p14-data-table-library",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "\"A React component that displays data in the form of a table\"",
   "main": "dist/index.js",
   "module": "dist/index.es.js",

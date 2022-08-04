@@ -25,88 +25,59 @@ stories.add("App", () => {
             header: "Department",
             dataKey: "department"
         },
+        {
+            header: "Date",
+            dataKey: "date",
+            isDate: true
+        },
+        {
+            header: "Age",
+            dataKey: "age"
+        }
     ]
 
     const data = [
         {
-            firstName: "Zmanda",
+            firstName: "Amanda",
             lastName: "Mango",
-            department: "Denmark"
+            department: "Denmark",
+            date: "7/02/2021",
+            age: 37,
         },
         {
             firstName: "Bryan",
             lastName: "Nyygern",
-            department: "England"
+            department: "England",
+            date: "6/03/2022",
+            age: 45
         },
         {
             firstName: "Charlie",
             lastName: "Oboubou",
-            department: "Finland"
+            department: "Finland",
+            date: "7/04/2022",
+            age: 46
         },
         {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
+            firstName: "David",
+            lastName: "Pastor",
+            department: "Germany",
+            date: "7/05/2022",
+            age: 52
         },
         {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
+            firstName: "Eric",
+            lastName: "Qualy",
+            department: "Holland",
+            date: "8/06/2019",
+            age: 63
         },
         {
-            firstName: "Echo",
-            lastName: "Oboubou",
-            department: "Finland"
-        },
-        {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
-        },
-        {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
-        },
-        {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
-        },
-        {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
-        },
-        {
-            firstName: "Delta",
-            lastName: "Oboubou",
-            department: "Finland"
-        },
-        {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
-        },
-        {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
-        },
-        {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
-        },
-        {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
-        },
-        {
-            firstName: "Charlie",
-            lastName: "Oboubou",
-            department: "Finland"
+            firstName: "Fanny",
+            lastName: "Rampam",
+            department: "Iceland",
+            date: "7/07/2019",
+            age: 70
         },
     ]
 
