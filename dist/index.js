@@ -15,6 +15,7 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 */
 
 function DataTable(props) {
+  //States
   let data = props.data;
   const [reOrderedData, setReOrderedData] = React__default["default"].useState(data);
   const [tableData, setTableData] = React__default["default"].useState(reOrderedData);
@@ -22,17 +23,29 @@ function DataTable(props) {
   const [numberOfPages, setNumberOfPages] = React__default["default"].useState(Math.ceil(reOrderedData.length / entries));
   const [showing, setShowing] = React__default["default"].useState([1, entries]);
   const [ascending, setAscending] = React__default["default"].useState([false, ""]);
-  const [searchInput, setSearchInput] = React__default["default"].useState(""); //map over each employee and map over each value to create employee data rows
+  const [searchInput, setSearchInput] = React__default["default"].useState(""); //map over each object in the data array and generate the table according to props.tableHeaders
 
   const table = tableData.map((employee, index) => /*#__PURE__*/React__default["default"].createElement("tr", {
     key: index,
     className: "table__data-row"
-  }, Object.values(employee).map((value, index) => {
+  }, props.tableHeaders.map((header, index) => {
     return /*#__PURE__*/React__default["default"].createElement("td", {
       key: index,
       className: "table__data-value"
-    }, value);
-  }))); //Filter the table according to search input
+    }, employee[header.dataKey]);
+  }))); //Saved chuck just in case
+
+  /*map over each employee and map over each value to create employee data rows
+  const table = tableData.map((employee, index) => (
+      <tr key={index} className="table__data-row">
+          {Object.values(employee).map((value, index) => {
+              return(
+                  <td key={index} className="table__data-value">{value}</td>
+              )
+          })}
+      </tr>
+  ))*/
+  //Filter the table according to search input
 
   React__default["default"].useEffect(() => {
     const lowerCaseSearchInput = searchInput.toLowerCase().trim();
@@ -90,29 +103,58 @@ function DataTable(props) {
   } //Custom sorting function for handleReOrder below
 
 
-  function dynamicSort(property) {
-    let sortOrder = 1;
+  function ascendingSort(dataKey, isDate) {
+    let sortOrder = 1; //For negative numbers
 
-    if (property[0] === "-") {
+    if (dataKey[0] === "-") {
       sortOrder = -1;
-      property = property.substr(1);
+      dataKey = dataKey.substr(1);
     }
 
     return function (a, b) {
-      let result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+      let result = 0;
+
+      if (isDate) {
+        result = new Date(a[dataKey]) < new Date(b[dataKey]) ? -1 : new Date(a[dataKey]) > new Date(b[dataKey]) ? 1 : 0;
+      } else {
+        result = a[dataKey] < b[dataKey] ? -1 : a[dataKey] > b[dataKey] ? 1 : 0;
+      }
+
+      return result * sortOrder;
+    };
+  }
+
+  function descendingSort(dataKey, isDate) {
+    let sortOrder = 1; //For negative numbers
+
+    if (dataKey[0] === "-") {
+      sortOrder = -1;
+      dataKey = dataKey.substr(1);
+    }
+
+    return function (a, b) {
+      let result = 0;
+
+      if (isDate) {
+        result = new Date(a[dataKey]) > new Date(b[dataKey]) ? -1 : new Date(a[dataKey]) < new Date(b[dataKey]) ? 1 : 0;
+      } else {
+        result = a[dataKey] > b[dataKey] ? -1 : a[dataKey] < b[dataKey] ? 1 : 0;
+      }
+
       return result * sortOrder;
     };
   } //Re Order the data according to which reorder button was pressed
 
 
-  function handleReOrder(dataKey) {
+  function handleReOrder(dataKey, isDate) {
     if (ascending[0] && ascending[1] === dataKey) {
       let sortData = [...reOrderedData];
-      let newData = sortData.reverse();
+      let newData = sortData.sort(descendingSort(dataKey, isDate));
       setReOrderedData(newData);
+      setAscending([false, dataKey]);
     } else {
       let sortData = [...reOrderedData];
-      let newData = sortData.sort(dynamicSort(dataKey));
+      let newData = sortData.sort(ascendingSort(dataKey, isDate));
       setReOrderedData(newData);
       setAscending([true, dataKey]);
     }
@@ -123,8 +165,8 @@ function DataTable(props) {
     key: index,
     className: "table__header"
   }, object.header, /*#__PURE__*/React__default["default"].createElement("button", {
-    className: "table__header-filter button",
-    onClick: () => handleReOrder(object.dataKey)
+    className: "table__header-filter",
+    onClick: () => handleReOrder(object.dataKey, object.isDate)
   }, "\u296E"))); //map over props.entriesPerPage to generate dropdown options
 
   const options = props.entriesPerPage.map((entries, index) => /*#__PURE__*/React__default["default"].createElement("option", {
@@ -134,7 +176,7 @@ function DataTable(props) {
   return /*#__PURE__*/React__default["default"].createElement("section", {
     className: "component-container"
   }, /*#__PURE__*/React__default["default"].createElement("section", {
-    className: "table-header"
+    className: "dropdown-with-search"
   }, /*#__PURE__*/React__default["default"].createElement("section", {
     className: "dropdown__container"
   }, /*#__PURE__*/React__default["default"].createElement("p", null, "Show"), /*#__PURE__*/React__default["default"].createElement("select", {
@@ -153,7 +195,7 @@ function DataTable(props) {
     className: "table__header-row"
   }, tableHeaders)), /*#__PURE__*/React__default["default"].createElement("tbody", null, table)), /*#__PURE__*/React__default["default"].createElement("section", {
     className: "table-footer"
-  }, /*#__PURE__*/React__default["default"].createElement("p", null, "Showing ", showing[0], " to ", showing[1], " of ", reOrderedData.length, " entries"), /*#__PURE__*/React__default["default"].createElement("section", null, buttons)));
+  }, tableData.length === 0 ? /*#__PURE__*/React__default["default"].createElement("p", null, "No data to display") : /*#__PURE__*/React__default["default"].createElement("p", null, "Showing ", showing[0], " to ", showing[1], " of ", reOrderedData.length, " entries"), /*#__PURE__*/React__default["default"].createElement("section", null, buttons)));
 }
 
 exports.DataTable = DataTable;

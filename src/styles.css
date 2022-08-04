@@ -28,8 +28,8 @@
     padding: 5px;
 }
 
-/*Table header (dropdown + search)*/
-.table-header{
+/*Dropdown + search*/
+.dropdown-with-search{
     display: flex;
     justify-content: space-between;
     width: 100%;

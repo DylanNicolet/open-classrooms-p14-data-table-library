@@ -149,7 +149,7 @@ export function DataTable(props){
     
     //map over header array to generate table headers
     const tableHeaders = props.tableHeaders.map((object, index) => (
-        <th key={index} className="table__header">{object.header}<button className="table__header-filter button" onClick={() => handleReOrder(object.dataKey, object.isDate)}>⥮</button></th>
+        <th key={index} className="table__header">{object.header}<button className="table__header-filter" onClick={() => handleReOrder(object.dataKey, object.isDate)}>⥮</button></th>
         
     ))
 
@@ -160,7 +160,7 @@ export function DataTable(props){
 
     return(
         <section className="component-container">
-            <section className="table-header">
+            <section className="dropdown-with-search">
                 <section className="dropdown__container">
                     <p>Show</p>
                     <select name="entries" id="entries-select" onChange={e => setEntries(e.target.value)}>
@@ -184,7 +184,7 @@ export function DataTable(props){
                 </tbody>
             </table>
             <section className="table-footer">
-                <p>Showing {showing[0]} to {showing[1]} of {reOrderedData.length} entries</p>
+                {tableData.length === 0? <p>No data to display</p> : <p>Showing {showing[0]} to {showing[1]} of {reOrderedData.length} entries</p>}
                 <section>
                     {buttons}
                 </section>
