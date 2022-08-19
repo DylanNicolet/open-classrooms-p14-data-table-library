@@ -1,7 +1,8 @@
 # open-classrooms-p14-data-table-library
 
 ## 1. About
-This is a React component to display data in the form of a table.
+- This is a React component to display data in the form of a table.
+- [Link to published NPM library](https://www.npmjs.com/package/open-classrooms-p14-data-table-library)
 
 ## 2. Functionalities
 - Selectable number of entries shown per page.
